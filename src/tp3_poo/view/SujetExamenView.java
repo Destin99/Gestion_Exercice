@@ -1,0 +1,383 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package tp3_poo.view;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
+import tp3_poo.model.Exercice;
+import tp3_poo.model.ExerciceSimple;
+import tp3_poo.model.ExerciceStandard;
+import tp3_poo.model.ManipTp;
+import tp3_poo.model.QuestionDeCours;
+import tp3_poo.model.SujetExamen;
+import tp3_poo.persistance.dao.SujetExamenDAO;
+
+/**
+ *
+ * @author Moutek
+ */
+public class SujetExamenView extends javax.swing.JFrame {
+
+    private SujetExamen formObject;
+    private final SujetExamenDAO dao;
+
+    /**
+     * Creates new form SacView
+     */
+    public SujetExamenView() {
+        initComponents();
+        setLocationRelativeTo(null);
+        dao = new SujetExamenDAO();
+        setFormObject(new SujetExamen());
+    }
+
+    public void actualiser() {
+        // On lit les valeurs des champs propres au sujet Examen
+
+//         try {
+//             matiereFTextField.setText(formObject.getMatiere());
+//             if(matiereFTextField.getText().trim().isEmpty()){
+//             messageLabel.setText("Entrer la matiere");
+//             Font fontentered = new Font(Font.DIALOG, Font.ITALIC, 20);
+//            messageLabel.setFont(fontentered);
+//            messageLabel.setForeground(Color.RED);
+//        }
+//        } catch (Exception ex) {
+//            messageLabel.setText("Erreur lors de l'enregistrement; Raison : " + ex.getMessage());
+//
+//            messageLabel.setForeground(Color.RED);
+//            messageLabel.setBackground(Color.WHITE);
+//            Logger.getLogger(SujetExamenView.class.getName()).log(Level.SEVERE, null, ex);
+//        }         
+//        formObject.setMatiere(matiereFTextField.getText());
+//        if (matiereFTextField.getText().equals("")) {
+//             try {
+//                String uFName = matiereFTextField.getText();
+//
+//                if(!uFName.matches("[A-Za-z]+"))
+//                   
+//                    throw new Exception();
+//                 JOptionPane.showMessageDialog(matiereFTextField,"Svp enter une matiere valide!");
+//            }
+//            catch(Exception e1) {
+//                matiereFTextField.setText("");
+//                JOptionPane.showMessageDialog(matiereFTextField,"Svp enter une matiere valide!");
+//            }
+//        }
+        anneeJSpinner.setValue(formObject.getAnnee());
+        anneeJSpinner.setModel(new SpinnerNumberModel(0, 0, 3000, 1));
+        // On itère sur la liste des exercices du sujet examen
+        int nbLignes = formObject.getExercices().size();
+        Object[][] data = new Object[nbLignes][9];
+        int i = 0;
+        for (Exercice e : formObject.getExercices()) {
+            data[i][0] = e.getNumero();
+            data[i][1] = e.getClass().getSimpleName();
+            if (e instanceof ExerciceSimple) {
+                data[i][2] = ((ExerciceSimple) e).getEnonce();
+            }
+            data[i][3] = e.getDuree();
+            if (e instanceof ExerciceStandard) {
+                data[i][4] = ((ExerciceStandard) e).getCotation();
+                data[i][5] = ((ExerciceStandard) e).getAnnexe();
+            }
+            if (e instanceof QuestionDeCours) {
+                data[i][4] = ((QuestionDeCours) e).getCotation();
+            }
+            if (e instanceof ManipTp) {
+                data[i][6] = Arrays.toString(((ManipTp) e).getCourbe());//gerer l'affichage, convertir un tableau de float en String
+            }
+            data[i][7] = e.calculerBareme();
+            i++;
+        }
+        // Chaque exercice correspond à une ligne dans la table
+        exercicesTable.setModel(new DefaultTableModel(
+                data,
+                new String[]{
+                    "Nº", "Type", "Enoncé", "Durée", "Cotation", "Annexe", "Courbe", "Barème"
+                }
+        ));
+        exercicesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        exercicesTable.getColumn("Actions").setCellRenderer(new ButtonRenderer());
+//        exercicesTable.getColumn("Actions").setCellEditor(new ButtonEditor(new JCheckBox()));
+    }
+
+    @Override
+    public final void setLocationRelativeTo(Component c) {
+        super.setLocationRelativeTo(c); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public final void setFormObject(SujetExamen formObject) {
+        this.formObject = formObject;
+        actualiser();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        exercicesTable = new javax.swing.JTable();
+        effacerButton = new javax.swing.JButton();
+        ajouterButton = new javax.swing.JButton();
+        enregistrerButton = new javax.swing.JButton();
+        numeroLabel = new javax.swing.JLabel();
+        anneeJSpinner = new javax.swing.JSpinner();
+        poidsLabel = new javax.swing.JLabel();
+        matiereFTextField = new javax.swing.JFormattedTextField();
+        supprimerButton = new javax.swing.JButton();
+        messageLabel = new javax.swing.JLabel();
+        enregistrerButton2 = new javax.swing.JButton();
+        rechercherButton = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gestion de sujets d'examen");
+
+        exercicesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nº", "Type", "Enoncé", "Durée", "Cotation", "Annexe", "Courbe", "Barème"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Float.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(exercicesTable);
+        exercicesTable.getAccessibleContext().setAccessibleName("");
+
+        effacerButton.setText("Effacer");
+        effacerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                effacerButtonActionPerformed(evt);
+            }
+        });
+
+        ajouterButton.setText("Ajouter");
+        ajouterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ajouterButtonActionPerformed(evt);
+            }
+        });
+
+        enregistrerButton.setText("Afficher");
+        enregistrerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enregistrerButtonActionPerformed(evt);
+            }
+        });
+
+        numeroLabel.setLabelFor(anneeJSpinner);
+        numeroLabel.setText("Année");
+
+        anneeJSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                anneeValueChange(evt);
+            }
+        });
+
+        poidsLabel.setLabelFor(matiereFTextField);
+        poidsLabel.setText("Matière");
+
+        matiereFTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                matiereValueChange(evt);
+            }
+        });
+
+        supprimerButton.setText("Supprimer");
+        supprimerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supprimerButtonActionPerformed(evt);
+            }
+        });
+
+        messageLabel.setBackground(new java.awt.Color(255, 255, 255));
+        messageLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        enregistrerButton2.setText("Enregistrer");
+        enregistrerButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enregistrerButton2ActionPerformed(evt);
+            }
+        });
+
+        rechercherButton.setText("Rechercher");
+        rechercherButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rechercherButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(messageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(poidsLabel)
+                            .addComponent(matiereFTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(anneeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(numeroLabel)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(supprimerButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(rechercherButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(enregistrerButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(enregistrerButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ajouterButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(effacerButton)))))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(poidsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(matiereFTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(numeroLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(anneeJSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(messageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ajouterButton)
+                    .addComponent(effacerButton)
+                    .addComponent(enregistrerButton)
+                    .addComponent(enregistrerButton2)
+                    .addComponent(rechercherButton))
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(supprimerButton))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void enregistrerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enregistrerButtonActionPerformed
+        new AfficherSujetExamenView(formObject).setVisible(true);
+    }//GEN-LAST:event_enregistrerButtonActionPerformed
+
+    private void effacerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_effacerButtonActionPerformed
+        formObject = new SujetExamen();
+        matiereFTextField.setText(formObject.getMatiere());
+        anneeJSpinner.setValue(formObject.getAnnee());
+        actualiser();
+    }//GEN-LAST:event_effacerButtonActionPerformed
+
+    private void supprimerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supprimerButtonActionPerformed
+        // check for selected row first
+        int s = exercicesTable.getSelectedRow();
+        if (s != -1) {
+            // remove selected row from the view model
+            ((DefaultTableModel) exercicesTable.getModel()).removeRow(s);
+            // remove selected row from the data model
+            formObject.supprimer(s);
+        }
+    }//GEN-LAST:event_supprimerButtonActionPerformed
+
+    private void anneeValueChange(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_anneeValueChange
+        formObject.setAnnee((Integer) anneeJSpinner.getValue());
+        
+    }//GEN-LAST:event_anneeValueChange
+
+    private void ajouterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ajouterButtonActionPerformed
+        new AjouterExoView(formObject, this).setVisible(true);
+    }//GEN-LAST:event_ajouterButtonActionPerformed
+
+    private void matiereValueChange(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_matiereValueChange
+        
+        formObject.setMatiere(matiereFTextField.getText());
+        char c= evt.getKeyChar();
+        if(!Character.isLetter(c)|| matiereFTextField.getText().trim().isEmpty()){
+            messageLabel.setText("Mistake");
+        }
+        else
+            formObject.setMatiere(matiereFTextField.getText());
+    }//GEN-LAST:event_matiereValueChange
+
+    private void enregistrerButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enregistrerButton2ActionPerformed
+        try {
+            dao.creer(formObject);
+            messageLabel.setText("Succès de l'enregistrement");
+            Font fontentered = new Font(Font.DIALOG, Font.ITALIC, 30);
+            messageLabel.setFont(fontentered);
+            messageLabel.setForeground(Color.YELLOW);
+            messageLabel.setBackground(Color.red);
+        } catch (Exception ex) {
+            messageLabel.setText("Erreur lors de l'enregistrement; Raison : " + ex.getMessage());
+
+            messageLabel.setForeground(Color.RED);
+            messageLabel.setBackground(Color.WHITE);
+            Logger.getLogger(SujetExamenView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_enregistrerButton2ActionPerformed
+
+    private void rechercherButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercherButtonActionPerformed
+        new RechercherSujetExamenView(dao, this).setVisible(true);
+    }//GEN-LAST:event_rechercherButtonActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ajouterButton;
+    private javax.swing.JSpinner anneeJSpinner;
+    private javax.swing.JButton effacerButton;
+    private javax.swing.JButton enregistrerButton;
+    private javax.swing.JButton enregistrerButton2;
+    private javax.swing.JTable exercicesTable;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JFormattedTextField matiereFTextField;
+    private javax.swing.JLabel messageLabel;
+    private javax.swing.JLabel numeroLabel;
+    private javax.swing.JLabel poidsLabel;
+    private javax.swing.JButton rechercherButton;
+    private javax.swing.JButton supprimerButton;
+    // End of variables declaration//GEN-END:variables
+}
